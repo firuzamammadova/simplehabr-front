@@ -1,0 +1,4 @@
+export const GET_POSTS_SUCCESS="GET_POSTS_SUCCESS"
+
+
+export const LOGIN_SUCCESS="LOGIN_SUCCESS"
