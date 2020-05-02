@@ -2,5 +2,5 @@ export default{
    
     posts:[],
    // user:{},
-    token:{}
+    data:{}
 }
