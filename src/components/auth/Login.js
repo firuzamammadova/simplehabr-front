@@ -19,6 +19,7 @@ class Login extends Component {
           onSubmit={(e) => {
             e.preventDefault();
             this.props.actions.login(this.state.username, this.state.password);
+            console.log(localStorage.getItem("user"))
           }}
         >
           <FormGroup row>
