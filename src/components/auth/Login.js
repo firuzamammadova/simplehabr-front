@@ -1,83 +1,72 @@
 import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-
+import { Form, FormGroup, Col, Input, Button } from "reactstrap";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as authActions from "../../redux/actions/authActions";
+import { userActions } from "../../redux/actions/authActions";
+
 class Login extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    username: "",
+    password: "",
+  };
 
-    // reset login status
-    this.props.logout();
-
-    this.state = {
-        username: '',
-        password: '',
-        submitted: false
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-}
-
-handleChange(e) {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-}
-
-handleSubmit(e) {
-    e.preventDefault();
-
-    this.setState({ submitted: true });
-    const { username, password } = this.state;
-    if (username && password) {
-        this.props.login(username, password);
-    }
-    console.log(this.props.token);
-}
-
-
-render() {
-  const { username, password, submitted } = this.state;
-  return (
-      <div className="col-md-6 col-md-offset-3">
-          <h2>Login</h2>
-          <form name="form" onSubmit={this.handleSubmit}>
-              <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
-                  <label htmlFor="username">Username</label>
-                  <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} />
-                  {submitted && !username &&
-                      <div className="help-block">Username is required</div>
-                  }
-              </div>
-              <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
-                  <label htmlFor="password">Password</label>
-                  <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
-                  {submitted && !password &&
-                      <div className="help-block">Password is required</div>
-                  }
-              </div>
-              <div className="form-group">
-                  <button className="btn btn-primary">Login</button>
-                 
-                  {/* <Link to="/register" className="btn btn-link">Register</Link> */}
-              </div>
-          </form>
+  render() {
+    return (
+      <div className="col-lg-8 offset-lg-2">
+        <h2>Login</h2>
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            this.props.actions.login(this.state.username, this.state.password);
+          }}
+        >
+          <FormGroup row>
+            <Col sm={7}>
+              <Input
+                type="text"
+                name="username"
+                id="username"
+                placeholder="Username"
+                onChange={(e) => {
+                  this.setState({ username: e.target.value });
+                }}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Col sm={7}>
+              <Input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Password"
+                onChange={(e) => {
+                  this.setState({ password: e.target.value });
+                }}
+              />
+            </Col>
+          </FormGroup>
+          <Button color="primary">Login</Button>
+          <Link to="/register" color="secondary">
+            Register
+          </Link>
+        </Form>
       </div>
-  );
+    );
+  }
 }
+
+function mapStateToProps(state) {
+  return {};
 }
-function mapState(state) {
+
+function mapDispatchToProps(dispatch) {
   return {
-    // currentCategory: state.changeCategoryReducer,
-    token: state.AuthReducer ,
+    actions: {
+      login: bindActionCreators(userActions.login_success, dispatch),
+    },
   };
 }
 
-const actionCreators = {
-  login: authActions.login,
-  logout: authActions.logout
-};
-
-export default  connect(mapState, actionCreators)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

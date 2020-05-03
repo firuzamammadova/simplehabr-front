@@ -2,5 +2,8 @@ export default{
    
     posts:[],
    // user:{},
-    data:{}
+    data:{},
+    user: JSON.parse(localStorage.getItem("user")),
+    username : '',
+    password : ''
 }
