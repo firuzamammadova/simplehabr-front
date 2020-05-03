@@ -15,14 +15,35 @@ import {
   } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-export default class Navi extends Component{
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { userActions } from "../../redux/actions/authActions";
+import { history}  from "../../redux/reducers/helpers/history";
+
+
+class Navi extends Component{
     constructor(props){
         super(props);
     
         this.toggle=this.toggle.bind(this);
         this.state={
-            isOpen:false
+            isOpen:false,
+            
         };
+    }
+    componentDidMount(){
+
+      
+      if(this.props.user){
+        this.setState({logged:true})
+        console.log("sasad")
+      }
+      else{
+        this.setState({logged:false})
+        console.log("noo")
+
+      }
+      console.log(this.state.logged)
     }
     
 
@@ -62,7 +83,16 @@ render(){
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
-  <NavbarText><Link to="/login">Log in</Link></NavbarText>
+  <NavbarText>{this.state.logged==true  ? (<Link to="/login" onClick={()=>{
+    this.setState({logged:false})
+    this.props.actions.logout();
+    console.log(this.state.logged)
+   history.push('/')
+  }}>Log out</Link>) : (<Link to="/login" onClick={()=>{
+    console.log(this.state.logged)
+    this.setState({logged:true})
+   history.push('/login')
+  }}>Log in</Link>)}</NavbarText>
         </Collapse>
       </Navbar>
     </div>
@@ -70,3 +100,17 @@ render(){
   );
 }
 }
+function mapStateToProps(state) {
+   
+  return { user : state.authReducer };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: {
+      logout: bindActionCreators(userActions.logout, dispatch),
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navi);
