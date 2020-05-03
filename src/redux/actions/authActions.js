@@ -1,19 +1,21 @@
 import * as actionTypes from "./actionTypes";
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from "history";
+
+const history = createBrowserHistory();
 
 export const userActions = {
-  login_success,
+  login,
   logout,
 };
 
- function login_success(username, password) {
+function login(username, password) {
   return (dispatch) => {
     dispatch(request({ username }));
 
-    login(username, password).then(
+    login_success(username, password).then(
       (user) => {
         dispatch(success(user));
-       // history.push("/");
+        history.push("/");
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -32,14 +34,15 @@ export const userActions = {
   }
 }
 
-function login(username, password) {
+function login_success(username, password) {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
   };
 
-  return fetch("https://localhost:5001/api/auth/login", requestOptions)
+  console.log(requestOptions);
+  return fetch("http://localhost:5000/api/auth/login", requestOptions)
     .then(handleResponse)
     .then((user) => {
       localStorage.setItem("user", JSON.stringify(user));

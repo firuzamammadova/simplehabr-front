@@ -9,7 +9,7 @@ export function getPostsSuccess(posts) {
 
 export function getPosts() {
     return function (dispatch) {
-      let url = "https://localhost:5001/api/post/getallposts/";
+      let url = "https://localhost:5000/api/post/getall/";
    
   
       return fetch(url)
