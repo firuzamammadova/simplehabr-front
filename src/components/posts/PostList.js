@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as postActions from "../../redux/actions/postAction";
+import * as likeActions from '../../redux/actions/likeActions'
 import {
   ListGroup,
   ListGroupItem,
@@ -78,7 +79,14 @@ class PostList extends Component {
               <CardTitle>{p.header}</CardTitle>
               {/* <CardSubtitle>Card subtitle</CardSubtitle> */}
               <CardText>{p.text}</CardText>
-              <Button>Like</Button>
+              <CardText><small>{p.likes} likes</small></CardText>
+
+              <Button onClick={(e) => {
+            
+           
+            this.props.actions.like(p.id);
+           // window.location.reload();
+          }}>Like</Button>
             </CardBody>
           </Card>
         ))}
@@ -91,7 +99,8 @@ function mapDistpatchToProps(dispatch) {
   return {
     actions: {
       getPosts: bindActionCreators(postActions.getPosts, dispatch),
-      share:bindActionCreators(postActions.sharePost,dispatch)
+      share:bindActionCreators(postActions.sharePost,dispatch),
+      like:bindActionCreators(likeActions.Like,dispatch)
     },
   };
 }
