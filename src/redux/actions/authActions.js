@@ -6,7 +6,43 @@ import { history}  from "../reducers/helpers/history";
 export const userActions = {
   login,
   logout,
+  register
 };
+
+function register(username,password) {
+  return dispatch => {
+      dispatch(request(username));
+
+      register_success(username,password)
+          .then(
+              user => { 
+                  dispatch(success());
+                  history.push('/login');
+                  console.log('registered succesfully');
+                 // dispatch(alertActions.success('Registration successful'));
+              },
+              error => {
+                  dispatch(failure(error.toString()));
+                  console.log(error.toString());
+                  //dispatch(alertActions.error(error.toString()));
+              }
+          );
+  };
+
+  function request(user) { return { type: actionTypes.REGISTER_REQUEST, user } }
+  function success(user) { return { type: actionTypes.REGISTER_SUCCESS, user } }
+  function failure(error) { return { type: actionTypes.REGISTER_FAILURE, error } }
+}
+
+function register_success(username,password) {
+  const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({username,password})
+  };
+
+  return fetch("https://localhost:5001/api/auth/register", requestOptions).then(handleResponse);
+}
 
 function login(username, password) {
   return (dispatch) => {
