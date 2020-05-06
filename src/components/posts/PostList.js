@@ -9,6 +9,10 @@ import {
   Form,
   FormGroup,
   Label,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
   Input,
 } from "reactstrap";
 import "./PostListStyle.css";
@@ -30,7 +34,9 @@ class PostList extends Component {
 
   };
   componentDidMount() {
+    
     this.props.actions.getPosts();
+    console.log(this.props.loggedIn)
   }
   render() {
     return (
@@ -74,13 +80,30 @@ class PostList extends Component {
           <Card key={p.id} className="card">
             {/* <CardImg top width="100%" src="/assets/318x180.svg" alt="Card image cap" /> */}
             <CardBody>
-              <CardSubtitle>{p.username}</CardSubtitle>
+              <div className="grid">
+              <CardSubtitle className="post"><big >{p.username}</big></CardSubtitle>
+
+              <UncontrolledDropdown >
+              <DropdownToggle  caret>
+                More
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem>
+                  Edit
+                </DropdownItem>
+                <DropdownItem>
+                  Delete
+                </DropdownItem>
+          
+              </DropdownMenu>
+            </UncontrolledDropdown>
+              </div>
 
               <CardTitle>{p.header}</CardTitle>
               {/* <CardSubtitle>Card subtitle</CardSubtitle> */}
               <CardText>{p.text}</CardText>
               <CardText><small>{p.likes} likes</small></CardText>
-
+             
               <Button onClick={(e) => {
             
            
@@ -108,6 +131,7 @@ function mapStateToProps(state) {
   return {
     // currentCategory: state.changeCategoryReducer,
     posts: state.postListReducer,
+    loggedIn : state.authReducer 
 
   };
 }

@@ -7,3 +7,11 @@
 .share{
     padding: 10px;
 }
+
+.grid{
+    display:flex;
+    justify-content: space-between;
+}
+.post{
+    color:blue;
+}

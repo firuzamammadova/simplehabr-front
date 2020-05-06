@@ -60,10 +60,10 @@ function login(username, password) {
   };
 
   function request(user) {
-    return { type: actionTypes.LOGIN_REQUEST, user };
+    return { type: actionTypes.LOGIN_REQUEST, payload:username };
   }
   function success(user) {
-    return { type: actionTypes.LOGIN_SUCCESS, user };
+    return { type: actionTypes.LOGIN_SUCCESS, payload:username };
   }
   function failure(error) {
     return { type: actionTypes.LOGIN_FAILURE, error };
@@ -81,7 +81,8 @@ function login_success(username, password) {
   return fetch("https://localhost:5001/api/auth/login", requestOptions)
     .then(handleResponse)
     .then((data) => {
-      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("user", JSON.stringify({data,username}));
+
       return data;
     });
 }
@@ -89,6 +90,7 @@ function login_success(username, password) {
 function logout() {
   //userService.logout();
   localStorage.removeItem("user");
+
   return { type: actionTypes.LOGOUT };
 }
 

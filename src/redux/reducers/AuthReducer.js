@@ -1,31 +1,19 @@
-import * as actionTypes from '../actions/actionTypes'
-import initialState from './initialState';
+import * as actionTypes from "../actions/actionTypes";
+import initialState from "./initialState";
 
-var user = initialState.user;
-var currState = user ? { loggedIn: true, user } : {};
-
-
-export default function authReducer(state = currState, action) {
+export default function authReducer(state = initialState.user, action) {
   switch (action.type) {
     case actionTypes.LOGIN_REQUEST:
-      return {
-        loggingIn: true,
-        user: action.user,
-      };
+      return action.payload;
 
     case actionTypes.LOGIN_SUCCESS:
-      return {
-        loggingIn: true,
-        user: action.user,
-      };
+      return action.payload;
 
     case actionTypes.LOGIN_FAILURE:
-      return {};
+      return action.payload;
 
     case actionTypes.LOGOUT:
-      return {
-       loggingIn:false
-      };
+      return "false";
 
     default:
       return state;
