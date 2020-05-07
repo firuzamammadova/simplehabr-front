@@ -18,12 +18,9 @@ export function getPosts() {
 }
 
 export function sharePost_success(header, photourl, text) {
-  
-  return{
-    type:actionTypes.SHARE_POST_SUCCESS, 
-    
-  }
-
+  return {
+    type: actionTypes.SHARE_POST_SUCCESS,
+  };
 }
 
 export function sharePost(header, photourl, text) {
@@ -37,6 +34,25 @@ export function sharePost(header, photourl, text) {
     fetch("https://localhost:5001/api/post/sharepost", requestOptions)
       .then(handleResponse)
       .then((result) => dispatch(sharePost_success(result)));
+  };
+}
+
+export function deletePost_success(postId) {
+  return {
+    type: actionTypes.DELERE_POST,
+  };
+}
+export function deletePost(postId) {
+  return function (dispatch) {
+    const requestOptions = {
+      method: "DELETE",
+      headers: { ...authHeader(), "Content-Type": "application/json" },
+      body: "",
+    };
+    fetch(
+      "https://localhost:5001/api/post/deletepost/" + postId.toString(),
+      requestOptions
+    ).then(handleResponse);
   };
 }
 

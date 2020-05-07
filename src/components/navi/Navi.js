@@ -37,10 +37,8 @@ class Navi extends Component {
    
     if (this.props.user) {
       this.setState({ logged: true });
-      console.log("sasad");
     } else {
       this.setState({ logged: false });
-      console.log("noo");
     }
     console.log(this.props.user);
   }
@@ -118,7 +116,9 @@ class Navi extends Component {
               </UncontrolledDropdown>
             </Nav>
             <NavbarText>
-              {this.state.logged === true ?  <LogOut username={this.props.user.username} onClick={this.handleLogoutClick}></LogOut>  : <Login onClick={this.handleLoginClick }></Login>}
+              {this.state.logged === true ? 
+               <LogOut username={this.props.user.username} onClick={this.handleLogoutClick}></LogOut>  : 
+               <Login onClick={this.handleLoginClick }></Login>}
             </NavbarText>
           </Collapse>
         </Navbar>

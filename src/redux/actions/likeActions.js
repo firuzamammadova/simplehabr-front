@@ -26,7 +26,34 @@ export  function Like(postId) {
         body: ""
     };
   
-    return fetch("https://localhost:5001/api/like/like/"+postId.toString(), requestOptions);
+    return fetch("https://localhost:5001/api/Like/like/"+postId.toString(), requestOptions);
   }
+
+  export  function Dislike(postId) {
+    return dispatch => {
+  
+        dislike_success(postId)
+            .then(
+                user => { 
+                    dispatch(success());
+                    console.log('registered succesfully');
+                   // dispatch(alertActions.success('Registration successful'));
+                }
+            );
+    };
+  
+    function success(user) { return { type: actionTypes.DISLIKE, user } }
+  }
+  
+  function dislike_success(postId) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: {...authHeader(),'Content-Type': 'application/json'},
+        body: ""
+    };
+    console.log(authHeader())
+    return fetch("https://localhost:5001/api/like/dislike/"+postId.toString(), requestOptions);
+  }
+
 
 

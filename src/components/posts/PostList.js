@@ -9,6 +9,7 @@ import {
   Form,
   FormGroup,
   Label,
+  NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -25,6 +26,7 @@ import {
   CardBody,
   CardSubtitle,
 } from "reactstrap";
+import { Link } from "react-router-dom";
 
 class PostList extends Component {
   constructor(props) {
@@ -44,22 +46,21 @@ class PostList extends Component {
   }
 
   handleLikeClick(id) {
-    console.log("like");
     this.props.actions.like(id);
   }
 
-  handleDislikeClick() {}
+  handleDislikeClick(id) {
+    this.props.actions.dislike(id);
+  }
   render() {
-
     function Like(props) {
       const id = props.id;
-      console.log(id);
-      return (
-        <Button onClick={props.Click(id)}>Like</Button>
-      );
+      return <Link onClick={() => props.Click(id)}>Like</Link>;
     }
     function Dislike(props) {
-      return <Button onClick={props.onClick}>Dislike</Button>;
+      const id = props.id;
+
+      return <Link onClick={() => props.Click(id)}>Dislike</Link>;
     }
     return (
       <div>
@@ -112,16 +113,15 @@ class PostList extends Component {
                 <CardSubtitle className="post">
                   <big>{p.username}</big>
                 </CardSubtitle>
-
-                <UncontrolledDropdown>
+{this.props.user.username==p.username ?    <UncontrolledDropdown>
                   <DropdownToggle caret>More</DropdownToggle>
                   <DropdownMenu right>
                     <DropdownItem>Edit</DropdownItem>
-                    <DropdownItem>Delete</DropdownItem>
+                    <DropdownItem onClick={()=>this.props.actions.delete(p.id)}>Delete</DropdownItem>
                   </DropdownMenu>
-                </UncontrolledDropdown>
+                </UncontrolledDropdown> : <div/>} 
+             
               </div>
-
               <CardTitle>{p.header}</CardTitle>
               {/* <CardSubtitle>Card subtitle</CardSubtitle> */}
               <CardText>{p.text}</CardText>
@@ -129,10 +129,11 @@ class PostList extends Component {
                 <small>{p.likes.length} likes</small>
               </CardText>
               {p.likes.some((u) => u.username === this.props.user.username) ? (
-                <Dislike></Dislike>
+                <Dislike id={p.id} Click={this.handleDislikeClick}></Dislike>
               ) : (
                 <Like id={p.id} Click={this.handleLikeClick}></Like>
-              )}
+              )
+              }
             </CardBody>
           </Card>
         ))}
@@ -141,12 +142,20 @@ class PostList extends Component {
   }
 }
 
+// {p.likes.some((u) => u.username === this.props.user.username) ? (
+//   <Dislike></Dislike>
+// ) : (
+//   <Like id={p.id} Click={this.handleLikeClick}></Like>
+// )}
 function mapDistpatchToProps(dispatch) {
   return {
     actions: {
       getPosts: bindActionCreators(postActions.getPosts, dispatch),
       share: bindActionCreators(postActions.sharePost, dispatch),
       like: bindActionCreators(likeActions.Like, dispatch),
+      dislike: bindActionCreators(likeActions.Dislike, dispatch),
+      delete:bindActionCreators(postActions.deletePost,dispatch)
+
     },
   };
 }
