@@ -4,12 +4,8 @@ import { bindActionCreators } from "redux";
 import * as postActions from "../../redux/actions/postAction";
 import * as likeActions from "../../redux/actions/likeActions";
 import {
-  ListGroup,
-  ListGroupItem,
   Form,
   FormGroup,
-  Label,
-  NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -27,6 +23,7 @@ import {
   CardSubtitle,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import Post from "../posts/Post";
 
 class PostList extends Component {
   constructor(props) {
@@ -34,34 +31,44 @@ class PostList extends Component {
     this.handleLikeClick = this.handleLikeClick.bind(this);
     this.handleDislikeClick = this.handleDislikeClick.bind(this);
 
+
+    this.handleEditClick = this.handleEditClick.bind(this);
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
+
     this.state = {
       header: "",
       text: "",
       photourl: "lalala",
+      editActive: "",
     };
   }
 
   componentDidMount() {
     this.props.actions.getPosts();
   }
+  handleEditClick(id) {
+    console.log(id);
+    this.setState({ editActive: id });
+  }
 
   handleLikeClick(id) {
     this.props.actions.like(id);
+    this.props.actions.getPosts();
   }
 
   handleDislikeClick(id) {
     this.props.actions.dislike(id);
+    this.props.actions.getPosts();
+  }
+  handleDeleteClick(id) {
+    console.log(this)
+    this.props.actions.getPosts();
+
+    this.props.actions.delete(id);
+    this.props.actions.getPosts();
   }
   render() {
-    function Like(props) {
-      const id = props.id;
-      return <Link onClick={() => props.Click(id)}>Like</Link>;
-    }
-    function Dislike(props) {
-      const id = props.id;
-
-      return <Link onClick={() => props.Click(id)}>Dislike</Link>;
-    }
+  
     return (
       <div>
         <div>
@@ -69,11 +76,14 @@ class PostList extends Component {
             onSubmit={(e) => {
               e.preventDefault();
 
+              this.props.actions.getPosts();
               this.props.actions.share(
                 this.state.header,
                 this.state.photourl,
                 this.state.text
               );
+
+              this.props.actions.getPosts();
               // window.location.reload();
             }}
           >
@@ -106,36 +116,64 @@ class PostList extends Component {
         </div>
 
         {this.props.posts.map((p) => (
-          <Card key={p.id} className="card">
-            {/* <CardImg top width="100%" src="/assets/318x180.svg" alt="Card image cap" /> */}
-            <CardBody>
-              <div className="grid">
-                <CardSubtitle className="post">
-                  <big>{p.username}</big>
-                </CardSubtitle>
-{this.props.user.username==p.username ?    <UncontrolledDropdown>
-                  <DropdownToggle caret>More</DropdownToggle>
-                  <DropdownMenu right>
-                    <DropdownItem>Edit</DropdownItem>
-                    <DropdownItem onClick={()=>this.props.actions.delete(p.id)}>Delete</DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown> : <div/>} 
-             
+          <div>
+            {p.id === this.state.editActive ? (
+              <div className={p.id === this.state.editActive ? "" : "none"}>
+                <Form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+
+                    this.props.actions.share(
+                      this.state.header,
+                      this.state.photourl,
+                      this.state.text
+                    );
+                    // window.location.reload();
+                  }}
+                >
+                  <Card className="card share">
+                    <CardSubtitle className="post">
+                      <big>{p.username}</big>
+                    </CardSubtitle>
+                    <FormGroup>
+                      <Input
+                        type="text"
+                        name="header"
+                        placeholder="Your Header"
+                        id="header"
+                        onChange={(e) => {
+                          this.setState({ header: e.target.value });
+                        }}
+                        value={p.header}
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <Input
+                        type="textarea"
+                        name="text"
+                        placeholder="Share something"
+                        id="text"
+                        onChange={(e) => {
+                          this.setState({ text: e.target.value });
+                        }}
+                        value={p.text}
+                      />
+                    </FormGroup>
+                    <Button color="primary">Save</Button>
+                  </Card>
+                </Form>
               </div>
-              <CardTitle>{p.header}</CardTitle>
-              {/* <CardSubtitle>Card subtitle</CardSubtitle> */}
-              <CardText>{p.text}</CardText>
-              <CardText>
-                <small>{p.likes.length} likes</small>
-              </CardText>
-              {p.likes.some((u) => u.username === this.props.user.username) ? (
-                <Dislike id={p.id} Click={this.handleDislikeClick}></Dislike>
-              ) : (
-                <Like id={p.id} Click={this.handleLikeClick}></Like>
-              )
-              }
-            </CardBody>
-          </Card>
+            ) : (
+              <Post
+                post={p}
+                username={this.props.user.username}
+                edit={this.handleEditClick}
+                deletep={this.handleDeleteClick}
+                like={this.handleLikeClick}
+                dislike={this.handleDislikeClick}
+              ></Post>
+            )}
+          </div>
         ))}
       </div>
     );
@@ -154,8 +192,7 @@ function mapDistpatchToProps(dispatch) {
       share: bindActionCreators(postActions.sharePost, dispatch),
       like: bindActionCreators(likeActions.Like, dispatch),
       dislike: bindActionCreators(likeActions.Dislike, dispatch),
-      delete:bindActionCreators(postActions.deletePost,dispatch)
-
+      delete: bindActionCreators(postActions.deletePost, dispatch),
     },
   };
 }
