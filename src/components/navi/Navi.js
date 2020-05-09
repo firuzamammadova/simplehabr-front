@@ -117,7 +117,7 @@ class Navi extends Component {
             </Nav>
             <NavbarText>
               {this.state.logged === true ? 
-               <LogOut username={this.props.user.username} onClick={this.handleLogoutClick}></LogOut>  : 
+               <LogOut username={this.props.user? this.props.user.username :""} onClick={this.handleLogoutClick}></LogOut>  : 
                <Login onClick={this.handleLoginClick }></Login>}
             </NavbarText>
           </Collapse>

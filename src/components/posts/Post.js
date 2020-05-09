@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Form,
   FormGroup,
@@ -20,9 +20,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
-function Post({ post, username, edit, deletep, like, dislike }) {
-
-
+function Post({ post, username="", edit, deletep, like, dislike }) {
   function Like(props) {
     const id = props.id;
     return <Link onClick={() => props.Click(id)}>Like</Link>;
@@ -40,7 +38,9 @@ function Post({ post, username, edit, deletep, like, dislike }) {
         <DropdownToggle caret>More</DropdownToggle>
         <DropdownMenu right>
           <DropdownItem onClick={() => props.editClick(id)}>Edit</DropdownItem>
-          <DropdownItem onClick={() => props.deleteClick(id)}>Delete</DropdownItem>
+          <DropdownItem onClick={() => props.deleteClick(id)}>
+            Delete
+          </DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
     );
@@ -54,14 +54,13 @@ function Post({ post, username, edit, deletep, like, dislike }) {
             <big>{post.username}</big>
           </CardSubtitle>
 
-          {username == post.username ? (
+          {username === post.username ? (
             <More editClick={edit} deleteClick={deletep} id={post.id}></More>
           ) : (
             <div />
           )}
         </div>
         <CardTitle>{post.header}</CardTitle>
-        {/* <CardSubtitle>Card subtitle</CardSubtitle> */}
         <CardText>{post.text}</CardText>
         <CardText>
           <small>{post.likes.length} likes</small>
