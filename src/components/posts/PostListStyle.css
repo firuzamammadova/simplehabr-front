@@ -12,6 +12,23 @@
     display:flex;
     justify-content: space-between;
 }
+
 .post{
-    color:blue;
+    color:rgb(28, 81, 145);
 }
+.usernameAndDate{
+    display:-webkit-box;;
+    
+}
+.posttext {
+    overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  }
+  .date{
+      margin-left: 20px;
+      color: black;
+      font-size: small;
+  }
+  

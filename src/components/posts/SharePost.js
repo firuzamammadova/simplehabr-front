@@ -16,27 +16,35 @@ class SharePost extends Component {
     this.props.actions.getPosts();
     if (this.props.post) {
       this.setState({ edit: true });
-      console.log(this.props.post);
       $("[id=text]:eq(1)").val(this.props.post.text)
       $("[id=header]:eq(1)").val(this.props.post.header)
 
     }
    
   }
+  
   render() {
+      
     return (
       <div>
         <Form
           onSubmit={(e) => {
             e.preventDefault();
 
+            if(this.props.post){
+                this.props.post.header=  $("[id=header]:eq(1)").val();
+                this.props.post.photoUrl=  this.state.photourl;
+                 this.props.post.text= $("[id=text]:eq(1)").val();
+            }
             this.props.actions.getPosts();
+            this.props.post?  this.props.actions.edit(this.props.post)
+              :
             this.props.actions.share(
               this.state.header,
               this.state.photourl,
               this.state.text
             );
-
+                this.props.save();
             this.props.actions.getPosts();
             // window.location.reload();
           }}
@@ -85,6 +93,8 @@ function mapDistpatchToProps(dispatch) {
     actions: {
       getPosts: bindActionCreators(postActions.getPosts, dispatch),
       share: bindActionCreators(postActions.sharePost, dispatch),
+      edit: bindActionCreators(postActions.editPost, dispatch),
+
     },
   };
 }

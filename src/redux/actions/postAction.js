@@ -37,6 +37,30 @@ export function sharePost(header, photourl, text) {
   };
 }
 
+
+
+export function editPost_success(post) {
+  return {
+    type: actionTypes.SHARE_POST_SUCCESS,
+  };
+}
+
+export function editPost(post) {
+  //console.log(authHeader());
+  return function (dispatch) {
+    const requestOptions = {
+      method: "POST",
+      headers: { ...authHeader(), "Content-Type": "application/json" },
+      body: JSON.stringify( post ),
+    };
+    console.log(post)
+    fetch("https://localhost:5001/api/post/editpost", requestOptions)
+      .then(handleResponse)
+      .then((result) => dispatch(sharePost_success(result)));
+  };
+}
+
+
 export function deletePost_success(postId) {
   return {
     type: actionTypes.DELERE_POST,

@@ -1,26 +1,28 @@
 import React from "react";
 import {
-  Form,
-  FormGroup,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem,
-  Input,
+  DropdownItem
 } from "reactstrap";
 import "./PostListStyle.css";
 import {
   Card,
-  Button,
   CardImg,
-  CardTitle,
   CardText,
-  CardBody,
-  CardSubtitle,
+  CardBody
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
-function Post({ post, username="", edit, deletep, like, dislike }) {
+function Post({
+  post,
+  username = "",
+  edit,
+  deletep,
+  like,
+  dislike,
+  moreclick,
+}) {
   function Like(props) {
     const id = props.id;
     return <Link onClick={() => props.Click(id)}>Like</Link>;
@@ -35,7 +37,7 @@ function Post({ post, username="", edit, deletep, like, dislike }) {
 
     return (
       <UncontrolledDropdown>
-        <DropdownToggle caret>More</DropdownToggle>
+        <DropdownToggle nav caret></DropdownToggle>
         <DropdownMenu right>
           <DropdownItem onClick={() => props.editClick(id)}>Edit</DropdownItem>
           <DropdownItem onClick={() => props.deleteClick(id)}>
@@ -45,31 +47,51 @@ function Post({ post, username="", edit, deletep, like, dislike }) {
       </UncontrolledDropdown>
     );
   }
+  function formatDate(string) {
+    var options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(string).toLocaleDateString([], options);
+  }
   return (
     <Card key={post.id} className="card">
       {/* <CardImg top width="100%" src="/assets/318x180.svg" alt="Card image cap" /> */}
       <CardBody>
         <div className="grid">
-          <CardSubtitle className="post">
-            <big>{post.username}</big>
-          </CardSubtitle>
-
+          <div className="usernameAndDate">
+            <h5 className="post">{post.username}</h5>
+            <span className="date">{formatDate(post.sharedTime)}</span>
+          </div>
           {username === post.username ? (
             <More editClick={edit} deleteClick={deletep} id={post.id}></More>
           ) : (
             <div />
           )}
         </div>
-        <CardTitle>{post.header}</CardTitle>
-        <CardText>{post.text}</CardText>
+        <h4>{post.header}</h4>
+        <br />
+        <CardText className="posttext">{post.text}</CardText>
+        <Link to="/detail" onClick={moreclick}>
+          Read More
+        </Link>
+        <hr />
         <CardText>
-          <small>{post.likes.length} likes</small>
+        <div className="grid">
+          <small>
+            {post.likes.length} likes 
+          </small>
+          <small>
+         {post.comments.length} comments
+          </small>
+          </div>
         </CardText>
+<div className="grid">
         {post.likes.some((u) => u.username === username) ? (
           <Dislike id={post.id} Click={dislike}></Dislike>
         ) : (
           <Like id={post.id} Click={like}></Like>
         )}
+       <span className="space" ></span>
+        <Link>Comment</Link>
+        </div>
       </CardBody>
     </Card>
   );

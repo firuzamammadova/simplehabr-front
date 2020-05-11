@@ -17,6 +17,7 @@ class PostList extends Component {
 
     this.handleEditClick = this.handleEditClick.bind(this);
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
+    this.handleSaveClick = this.handleSaveClick.bind(this);
 
     this.state = {
       header: "",
@@ -30,8 +31,10 @@ class PostList extends Component {
     this.props.actions.getPosts();
   }
   handleEditClick(id) {
-    console.log(id);
     this.setState({ editActive: id });
+  }
+  handleSaveClick() {
+    this.setState({ editActive: "8043ufpr3fjo"});
   }
 
   handleLikeClick(id) {
@@ -53,6 +56,7 @@ class PostList extends Component {
 
   }
   render() {
+    const { expanded } = this.state
     return (
       <div>
         {this.props.user?<SharePost></SharePost> : <div/> }
@@ -61,7 +65,7 @@ class PostList extends Component {
         {this.props.posts.map((p) => (
           <div>
             {p.id === this.state.editActive ? (
-              <SharePost post={p}></SharePost>
+              <SharePost post={p} save={this.handleSaveClick}></SharePost>
             ) : (
               <Post
                 post={p}
@@ -71,9 +75,12 @@ class PostList extends Component {
                 like={this.handleLikeClick}
                 dislike={this.handleDislikeClick}
               ></Post>
+             
             )}
+
           </div>
         ))}
+        
       </div>
     );
   }
