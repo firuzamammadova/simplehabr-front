@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Form, FormGroup, Input, Card, Button , CardSubtitle} from "reactstrap";
-import $ from 'jquery'
+import { Form, FormGroup, Input, Card, Button, CardSubtitle } from "reactstrap";
+import $ from "jquery";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as postActions from "../../redux/actions/postAction";
@@ -16,50 +16,57 @@ class SharePost extends Component {
     this.props.actions.getPosts();
     if (this.props.post) {
       this.setState({ edit: true });
-      $("[id=text]:eq(1)").val(this.props.post.text)
-      $("[id=header]:eq(1)").val(this.props.post.header)
-
+      console.log(this.props.post)
+      $("[id=text]:eq(1)").val(this.props.post.text);
+      $("[id=header]:eq(1)").val(this.props.post.header);
     }
-   
   }
-  
+
   render() {
-      
     return (
       <div>
         <Form
           onSubmit={(e) => {
             e.preventDefault();
 
-            if(this.props.post){
-                this.props.post.header=  $("[id=header]:eq(1)").val();
-                this.props.post.photoUrl=  this.state.photourl;
-                 this.props.post.text= $("[id=text]:eq(1)").val();
-            }
             this.props.actions.getPosts();
-            this.props.post?  this.props.actions.edit(this.props.post)
-              :
-            this.props.actions.share(
-              this.state.header,
-              this.state.photourl,
-              this.state.text
-            );
-                this.props.save();
+            if (this.props.post) {
+              this.props.post.header = $("[id=header]:eq(1)").val();
+              this.props.post.photoUrl = this.state.photourl;
+              this.props.post.text = $("[id=text]:eq(1)").val();
+              this.props.actions.edit(this.props.post);
+              this.props.save();
+            } else {
+              this.props.actions.share(
+                this.state.header,
+                this.state.photourl,
+                this.state.text
+              );
+              $("#text").val("");
+      $("#header").val("");
+      this.setState({header:""})
+      this.setState({text:""})
+
+            }
+
             this.props.actions.getPosts();
             // window.location.reload();
           }}
         >
           <Card className="card share">
-              {this.state.edit ?  (<CardSubtitle className="post">
-            <big>{this.props.post.username}</big>
-          </CardSubtitle>) : (<div></div>) }
+            {this.state.edit ? (
+              <CardSubtitle className="post">
+                <big>{this.props.post.username}</big>
+              </CardSubtitle>
+            ) : (
+              <div></div>
+            )}
             <FormGroup>
               <Input
                 type="text"
                 name="header"
                 placeholder="Your Header"
                 id="header"
-                
                 onChange={(e) => {
                   this.setState({ header: e.target.value });
                 }}
@@ -71,12 +78,13 @@ class SharePost extends Component {
                 name="text"
                 placeholder="Share something"
                 id="text"
-                
                 onChange={(e) => {
                   this.setState({ text: e.target.value });
-                  console.log('fdsf')
+                  console.log("fdsf");
                 }}
-              >  </Input>
+              >
+                {" "}
+              </Input>
             </FormGroup>
             <Button color="primary">
               {" "}
@@ -94,7 +102,6 @@ function mapDistpatchToProps(dispatch) {
       getPosts: bindActionCreators(postActions.getPosts, dispatch),
       share: bindActionCreators(postActions.sharePost, dispatch),
       edit: bindActionCreators(postActions.editPost, dispatch),
-
     },
   };
 }

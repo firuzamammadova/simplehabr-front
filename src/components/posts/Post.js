@@ -10,9 +10,14 @@ import {
   Card,
   CardImg,
   CardText,
-  CardBody
+  CardBody,
+  Form,
+  FormGroup,
+  Input
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import $ from "jquery";
+
 
 function Post({
   post,
@@ -22,10 +27,13 @@ function Post({
   like,
   dislike,
   moreclick,
+  readMore,
 }) {
   function Like(props) {
     const id = props.id;
+   
     return <Link onClick={() => props.Click(id)}>Like</Link>;
+
   }
   function Dislike(props) {
     const id = props.id;
@@ -51,6 +59,26 @@ function Post({
     var options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(string).toLocaleDateString([], options);
   }
+  function  ReadMore(params) {
+    var lengthoftext=post.text.length;
+    if(lengthoftext>200){
+      return (
+        <div>
+          <br></br>
+        <CardText className={readMore.readMoreActive.some((u)=>u===post.id)?"": "posttext"}>{post.text}</CardText>
+        <Link  onClick={()=>moreclick(post.id)}>
+      {  readMore.readMoreActive.some((u)=>u===post.id)?"Read Less": "Read More"}
+        </Link>
+        <hr></hr>
+        </div>
+      )
+    }
+    else{
+      return(
+        <div><CardText>{post.text}</CardText></div>
+      )
+    }
+  }
   return (
     <Card key={post.id} className="card">
       {/* <CardImg top width="100%" src="/assets/318x180.svg" alt="Card image cap" /> */}
@@ -67,12 +95,9 @@ function Post({
           )}
         </div>
         <h4>{post.header}</h4>
-        <br />
-        <CardText className="posttext">{post.text}</CardText>
-        <Link to="/detail" onClick={moreclick}>
-          Read More
-        </Link>
-        <hr />
+      
+       <ReadMore></ReadMore>
+    
         <CardText>
         <div className="grid">
           <small>
@@ -90,9 +115,24 @@ function Post({
           <Like id={post.id} Click={like}></Like>
         )}
        <span className="space" ></span>
-        <Link>Comment</Link>
+        <Link onClick={()=>{
+$("#comment").focus();
+        }}>Comment</Link>
+        
         </div>
+        
       </CardBody>
+      <Form className="comment">
+        <FormGroup>
+              <Input
+                type="text"
+                name="comment"
+                placeholder="Write Comment"
+                id="comment"
+              
+              />
+            </FormGroup>
+        </Form>
     </Card>
   );
 }

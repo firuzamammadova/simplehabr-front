@@ -7,7 +7,10 @@
 .share{
     padding: 10px;
 }
-
+.comment{
+    margin-left: 10px;
+    margin-right: 10px;
+}
 .grid{
     display:flex;
     justify-content: space-between;
