@@ -19,6 +19,7 @@ export const SHARE_POST_FAILURE= 'SHARE_POST_FAILURE'
 
 export const DELERE_POST= 'DELETE_POST'
 
+export const ADD_COMMENT='ADD_COMMENT'
 
 export const LIKE='LIKE'
 export const DISLIKE='DISLIKE'

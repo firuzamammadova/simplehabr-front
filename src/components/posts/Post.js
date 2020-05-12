@@ -3,7 +3,7 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
 } from "reactstrap";
 import "./PostListStyle.css";
 import {
@@ -13,11 +13,10 @@ import {
   CardBody,
   Form,
   FormGroup,
-  Input
+  Input,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import $ from "jquery";
-
 
 function Post({
   post,
@@ -28,12 +27,13 @@ function Post({
   dislike,
   moreclick,
   readMore,
+  change,
+  keyPress
 }) {
   function Like(props) {
     const id = props.id;
-   
-    return <Link onClick={() => props.Click(id)}>Like</Link>;
 
+    return <Link onClick={() => props.Click(id)}>Like</Link>;
   }
   function Dislike(props) {
     const id = props.id;
@@ -59,24 +59,35 @@ function Post({
     var options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(string).toLocaleDateString([], options);
   }
-  function  ReadMore(params) {
-    var lengthoftext=post.text.length;
-    if(lengthoftext>200){
+  function ReadMore(params) {
+    var lengthoftext = post.text.length;
+    if (lengthoftext > 200) {
       return (
         <div>
           <br></br>
-        <CardText className={readMore.readMoreActive.some((u)=>u===post.id)?"": "posttext"}>{post.text}</CardText>
-        <Link  onClick={()=>moreclick(post.id)}>
-      {  readMore.readMoreActive.some((u)=>u===post.id)?"Read Less": "Read More"}
-        </Link>
-        <hr></hr>
+          <CardText
+            className={
+              readMore.readMoreActive.some((u) => u === post.id)
+                ? ""
+                : "posttext"
+            }
+          >
+            {post.text}
+          </CardText>
+          <Link onClick={() => moreclick(post.id)}>
+            {readMore.readMoreActive.some((u) => u === post.id)
+              ? "Read Less"
+              : "Read More"}
+          </Link>
+          <hr></hr>
         </div>
-      )
-    }
-    else{
-      return(
-        <div><CardText>{post.text}</CardText></div>
-      )
+      );
+    } else {
+      return (
+        <div>
+          <CardText>{post.text}</CardText>
+        </div>
+      );
     }
   }
   return (
@@ -95,44 +106,45 @@ function Post({
           )}
         </div>
         <h4>{post.header}</h4>
-      
-       <ReadMore></ReadMore>
-    
+
+        <ReadMore></ReadMore>
+
         <CardText>
-        <div className="grid">
-          <small>
-            {post.likes.length} likes 
-          </small>
-          <small>
-         {post.comments.length} comments
-          </small>
+          <div className="grid">
+            <small>{post.likes.length} likes</small>
+            <small>{post.comments.length} comments</small>
           </div>
         </CardText>
-<div className="grid">
-        {post.likes.some((u) => u.username === username) ? (
-          <Dislike id={post.id} Click={dislike}></Dislike>
-        ) : (
-          <Like id={post.id} Click={like}></Like>
-        )}
-       <span className="space" ></span>
-        <Link onClick={()=>{
-$("#comment").focus();
-        }}>Comment</Link>
-        
+        <div className="grid">
+          {post.likes.some((u) => u.username === username) ? (
+            <Dislike id={post.id} Click={dislike}></Dislike>
+          ) : (
+            <Like id={post.id} Click={like}></Like>
+          )}
+          <span className="space"></span>
+          <Link
+            onClick={() => {
+              $("#comment").focus();
+            }}
+          >
+            Comment
+          </Link>
         </div>
-        
       </CardBody>
       <Form className="comment">
         <FormGroup>
-              <Input
-                type="text"
-                name="comment"
-                placeholder="Write Comment"
-                id="comment"
-              
-              />
-            </FormGroup>
-        </Form>
+          <Input
+            type="text"
+            name="comment"
+            placeholder="Write Comment"
+            id="comment"
+            onChange={(e)=>{
+              var data={e, post}
+              change(data)}}
+            onKeyDown={keyPress}
+          />
+        </FormGroup>
+      </Form>
     </Card>
   );
 }
