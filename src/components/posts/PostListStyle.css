@@ -8,6 +8,10 @@
     padding: 10px;
 }
 .comment{
+   
+    display: flex;
+}
+.margin{
     margin-left: 10px;
     margin-right: 10px;
 }

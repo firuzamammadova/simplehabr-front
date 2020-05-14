@@ -20,4 +20,41 @@ export function addComment_success() {
         .then((result) => dispatch(addComment_success(result)));
     };
   }
+
+  export function deleteComment_success() {
+    return {
+      type: actionTypes.SHARE_POST_SUCCESS,
+    };
+  }
   
+  export function deleteComment(commentid) {
+    //console.log(authHeader());
+    return function (dispatch) {
+      const requestOptions = {
+        method: "DELETE",
+        headers: { ...authHeader(), "Content-Type": "application/json" },
+        body: "",
+      };
+      fetch("https://localhost:5001/api/comment/deletecomment/"+commentid, requestOptions)
+        .then((result) => dispatch(deleteComment_success(result)));
+    };
+  }
+  
+  export function editComment_success() {
+    return {
+      type: actionTypes.SHARE_POST_SUCCESS,
+    };
+  }
+  
+  export function editComment(comment) {
+    //console.log(authHeader());
+    return function (dispatch) {
+      const requestOptions = {
+        method: "POST",
+        headers: { ...authHeader(), "Content-Type": "application/json" },
+        body: JSON.stringify(comment),
+      };
+      fetch("https://localhost:5001/api/comment/editcomment", requestOptions)
+        .then((result) => dispatch(editComment_success(result)));
+    };
+  }

@@ -16,7 +16,7 @@ class SharePost extends Component {
     this.props.actions.getPosts();
     if (this.props.post) {
       this.setState({ edit: true });
-      console.log(this.props.post)
+      console.log(this.props.post);
       $("[id=text]:eq(1)").val(this.props.post.text);
       $("[id=header]:eq(1)").val(this.props.post.header);
     }
@@ -43,10 +43,9 @@ class SharePost extends Component {
                 this.state.text
               );
               $("#text").val("");
-      $("#header").val("");
-      this.setState({header:""})
-      this.setState({text:""})
-
+              $("#header").val("");
+              this.setState({ header: "" });
+              this.setState({ text: "" });
             }
 
             this.props.actions.getPosts();
@@ -61,6 +60,7 @@ class SharePost extends Component {
             ) : (
               <div></div>
             )}
+            <br></br>
             <FormGroup>
               <Input
                 type="text"
