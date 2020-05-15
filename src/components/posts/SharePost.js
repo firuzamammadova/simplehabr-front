@@ -13,13 +13,18 @@ class SharePost extends Component {
   };
 
   componentDidMount() {
-    this.props.actions.getPosts();
     if (this.props.post) {
       this.setState({ edit: true });
       console.log(this.props.post);
       $("[id=text]:eq(1)").val(this.props.post.text);
       $("[id=header]:eq(1)").val(this.props.post.header);
     }
+  }
+  componentWillMount() {
+    console.log(this.props.profile);
+    this.props.profile === "true"
+      ? this.props.actions.getUserPosts()
+      : this.props.actions.getPosts();
   }
 
   render() {
@@ -99,6 +104,8 @@ class SharePost extends Component {
 function mapDistpatchToProps(dispatch) {
   return {
     actions: {
+      getUserPosts: bindActionCreators(postActions.getUserPosts, dispatch),
+
       getPosts: bindActionCreators(postActions.getPosts, dispatch),
       share: bindActionCreators(postActions.sharePost, dispatch),
       edit: bindActionCreators(postActions.editPost, dispatch),

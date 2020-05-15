@@ -6,6 +6,7 @@ import { Switch, Route, Router } from 'react-router-dom';
 import Login from '../auth/Login';
 import { history}  from "../../redux/reducers/helpers/history";
 import Register from '../auth/Register';
+import Profile from '../profile/Profile';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Switch>
         <Route path="/" exact component={PostList}></Route>
         <Route path="/register" exact component={ Register }></Route>
+        <Route path="/profile" exact component={ Profile }></Route>
 
           <Route path="/login" exact component={ Login }></Route>
         </Switch>

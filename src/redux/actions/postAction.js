@@ -10,12 +10,34 @@ export function getPostsSuccess(posts) {
 export function getPosts() {
   return function (dispatch) {
     let url = "https://localhost:5001/api/post/getallposts/";
-
+console.log('all')
     return fetch(url)
       .then((response) => response.json())
       .then((result) => dispatch(getPostsSuccess(result)));
   };
 }
+
+export function getUserPostsSuccess(posts) {
+  return {
+    type: actionTypes.GET_USER_POSTS_SUCCESS,
+    payload: posts,
+  };
+}
+
+export function getUserPosts() {
+  console.log('userposts')
+  return function (dispatch) {
+    let url = "https://localhost:5001/api/post/getuserposts/";
+    const requestOptions = {
+      method: "GET",
+      headers: { ...authHeader(), "Content-Type": "application/json" }
+    };
+    return fetch(url,requestOptions)
+      .then((response) => response.json())
+      .then((result) => dispatch(getUserPostsSuccess(result)));
+  };
+}
+
 
 export function sharePost_success(header, photourl, text) {
   return {

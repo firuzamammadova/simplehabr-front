@@ -22,13 +22,32 @@ class PostList extends Component {
       text: "",
       photourl: "lalala",
       editActive: "",
+      profile: "",
     };
+
   }
 
   componentDidMount() {
-    this.props.actions.getPosts();
+    if (this.props.profile) {
+      this.setState({ profile: "true" });
+  
+      console.log(this.state.profile);
+  
+    }
   }
+componentWillMount(){
+  if (this.props.profile) {
+    this.setState({ profile: "true" });
 
+    console.log(this.state.profile);
+
+  }
+  this.state.profile === "true"
+    ? this.props.actions.getUserPosts()
+    : this.props.actions.getPosts();
+  console.log(this.state);
+
+}
   handleEditClick(id) {
     this.setState({ editActive: id });
   }
@@ -40,13 +59,21 @@ class PostList extends Component {
   render() {
     const { expanded } = this.state;
     return (
-      <div>
-        {this.props.user ? <SharePost></SharePost> : <div />}
+      <div className={this.state.profile?"":"container2"}>
+        {this.props.user ? (
+          <SharePost profile={this.state.profile}></SharePost>
+        ) : (
+          <div />
+        )}
 
         {this.props.posts.map((p) => (
           <div>
             {p.id === this.state.editActive ? (
-              <SharePost post={p} save={this.handleSaveClick}></SharePost>
+              <SharePost
+                profile={this.state.profile}
+                post={p}
+                save={this.handleSaveClick}
+              ></SharePost>
             ) : (
               <Post
                 post={p}
@@ -64,6 +91,7 @@ class PostList extends Component {
 function mapDistpatchToProps(dispatch) {
   return {
     actions: {
+      getUserPosts: bindActionCreators(postActions.getUserPosts, dispatch),
       getPosts: bindActionCreators(postActions.getPosts, dispatch),
       share: bindActionCreators(postActions.sharePost, dispatch),
       like: bindActionCreators(likeActions.Like, dispatch),

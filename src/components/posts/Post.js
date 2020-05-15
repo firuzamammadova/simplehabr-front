@@ -39,8 +39,13 @@ class Post extends Component {
     
         this.state = {
           readMoreActive: [],
-          comment:{}
+          comment:{},
+          visiblecomments:false
         };
+      }
+      toggleComments(){
+        this.setState({visiblecomments:!this.state.visiblecomments})
+        console.log(this.state.visiblecomments)
       }
     
    
@@ -191,7 +196,11 @@ class Post extends Component {
             <CardText>
               <div className="grid">
                 <small>{post.likes.length} likes</small>
-                <small>{post.comments.length} comments</small>
+                <Link to=""
+            onClick={()=>{
+              this.toggleComments();
+            }}
+              style={{ textDecoration: "none", color: "black" }}><small>{post.comments.length} comments</small></Link>
               </div>
             </CardText>
             <div className="grid">
@@ -203,6 +212,7 @@ class Post extends Component {
               <span className="space"></span>
               <Link
                 onClick={() => {
+                  this.setState({visiblecomments:true});
                   $(`#comment${post.id}`).focus();
                 }}
               >
@@ -210,8 +220,9 @@ class Post extends Component {
               </Link>
             </div>
           </CardBody>
-          <hr></hr>
-          <CommentList post={post}></CommentList>
+          
+          {this.state.visiblecomments?<CommentList post={post}></CommentList>:<div></div>}
+          
         </Card>
       </div>
     );

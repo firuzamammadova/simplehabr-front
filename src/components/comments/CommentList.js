@@ -27,6 +27,7 @@ export default class CommentList extends Component {
   render() {
     return (
       <div>
+          <hr></hr>
         {this.props.post.comments.map((c) => (<div>
             {c.id===this.state.editActive? <WriteComment save={this.handleSaveClick} comment={c} id={c.postId}></WriteComment> :
           <Comment edit={this.handleEditClick} comment={c}></Comment>

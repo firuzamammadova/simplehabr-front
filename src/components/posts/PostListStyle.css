@@ -1,8 +1,11 @@
 .card{
     
+
+    margin-top: 10px;
+}
+.container2{
     margin-left: 250px;
     margin-right: 250px;
-    margin-top: 10px;
 }
 .share{
     padding: 10px;

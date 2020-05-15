@@ -43,13 +43,14 @@ class WriteComment extends Component {
           `[id=comment${this.props.comment.postId}]:eq(0)`
         ).val();
         this.props.actions.edit(this.props.comment);
+        $(`[id=comment${this.props.comment.postId}]:eq(0)`).val("");
+
         this.props.save();
       } else {
         this.props.actions.comment(this.state.comment);
       }
       this.props.actions.getPosts();
       this.setState({ comment: {} });
-      $(`[id=comment${this.props.comment.postId}]:eq(0)`).val("");
       e.target.value = "";
       // put the login here
     }

@@ -65,7 +65,7 @@ class Navi extends Component {
           {username}
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem><Link>Profile</Link></DropdownItem>
+          <DropdownItem><Link to="/profile" onClick={()=>history.push("/profile")}>Profile</Link></DropdownItem>
           <DropdownItem><Link>Settings</Link></DropdownItem>
           <DropdownItem divider />
           <DropdownItem> <Link
