@@ -49,7 +49,8 @@ class Comment extends Component {
             <div>
                 <div className=" comment margin ">
                <span className="post">{comment.username}</span> <p className=" margin">{comment.text}</p>
-               <More deleteClick={this.deleteComment} editClick={this.props.edit} id={comment.id}></More>
+               {this.props.profile? <div></div> :( <More deleteClick={this.deleteComment} editClick={this.props.edit} id={comment.id}></More>)}
+              
                </div>
              
             </div>

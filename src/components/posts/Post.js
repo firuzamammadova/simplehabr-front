@@ -176,7 +176,7 @@ class Post extends Component {
           <CardBody>
             <div className="grid">
               <div className="usernameAndDate">
-                <h5 className="post">{post.username}</h5>
+                <Link to={"/profile/"+post.username} className="post">{post.username}</Link>
                 <span className="date">{formatDate(post.sharedTime)}</span>
               </div>
               {this.props.username === post.username ? (
@@ -214,6 +214,7 @@ class Post extends Component {
                 onClick={() => {
                   this.setState({visiblecomments:true});
                   $(`#comment${post.id}`).focus();
+
                 }}
               >
                 Comment
@@ -221,7 +222,7 @@ class Post extends Component {
             </div>
           </CardBody>
           
-          {this.state.visiblecomments?<CommentList post={post}></CommentList>:<div></div>}
+              {this.state.visiblecomments?( <CommentList post={post}>{}</CommentList>):<div></div>}
           
         </Card>
       </div>

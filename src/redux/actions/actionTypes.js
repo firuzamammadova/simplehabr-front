@@ -23,7 +23,7 @@ export const DELERE_POST= 'DELETE_POST'
 export const ADD_COMMENT='ADD_COMMENT'
 export const DELETE_COMMENT='DELETE_COMMENT'
 export const EDIT_COMMENT='EDIT_COMMENT'
-
+export const GET_USER_COMMENTS="GET_USER_COMMENTS"
 
 export const LIKE='LIKE'
 export const DISLIKE='DISLIKE'

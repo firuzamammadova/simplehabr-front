@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Comment from "../comments/Comment";
 import WriteComment from "./WriteComment";
+import $ from "jquery";
 
 export default class CommentList extends Component {
 
@@ -14,7 +15,10 @@ export default class CommentList extends Component {
           editActive: "",
         };
       }
-    
+    componentDidMount(){
+      $(`#comment${this.props.post.id}`).focus();
+
+    }
     
     
       handleEditClick(id) {

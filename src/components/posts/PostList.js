@@ -8,7 +8,6 @@ import "./PostListStyle.css";
 
 import Post from "../posts/Post";
 import SharePost from "./SharePost";
-import Post2 from "./Post";
 
 class PostList extends Component {
   constructor(props) {
@@ -57,7 +56,6 @@ componentWillMount(){
   }
 
   render() {
-    const { expanded } = this.state;
     return (
       <div className={this.state.profile?"":"container2"}>
         {this.props.user ? (
@@ -65,7 +63,8 @@ componentWillMount(){
         ) : (
           <div />
         )}
-
+{              this.state.profile?(<div><br></br><p>Posts:</p></div>) : <div></div>
+}
         {this.props.posts.map((p) => (
           <div>
             {p.id === this.state.editActive ? (

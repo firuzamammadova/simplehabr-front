@@ -5,13 +5,16 @@ import RegisterReducer from './RegisterReducer'
 import postShareReducer from './postShareReducer'
 import likeReducer from './likeReducer'
 import authReducer from './authReducer'
+import commentReducer from './commentReducer'
+
 const rootReducer=combineReducers({
     authReducer,
     postListReducer,
     LoginReducer,
     RegisterReducer,
     postShareReducer,
-    likeReducer
+    likeReducer,
+    commentReducer
 })
 
 export default rootReducer;

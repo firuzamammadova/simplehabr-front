@@ -58,3 +58,24 @@ export function addComment_success() {
         .then((result) => dispatch(editComment_success(result)));
     };
   }
+
+  export function getUserCommentsSuccess(comments) {
+    return {
+      type: actionTypes.GET_USER_COMMENTS,
+      payload: comments,
+    };
+  }
+  
+  export function getUserComments() {
+    console.log('usercomments')
+    return function (dispatch) {
+      let url = "https://localhost:5001/api/comment/getusercomments/";
+      const requestOptions = {
+        method: "GET",
+        headers: { ...authHeader(), "Content-Type": "application/json" }
+      };
+      return fetch(url,requestOptions)
+        .then((response) => response.json())
+        .then((result) => dispatch(getUserCommentsSuccess(result)));
+    };
+  }
