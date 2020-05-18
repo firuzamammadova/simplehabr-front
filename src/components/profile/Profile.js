@@ -10,42 +10,41 @@ import * as commentActions from "../../redux/actions/commentActions";
 import Comment from "../comments/Comment";
 
 class Profile extends Component {
-
   constructor(props) {
     super(props);
 
-
     this.state = {
-   username:""
+      username: "",
     };
-
   }
   componentDidMount() {
-    this.props.actions.getPosts();
-    this.setState({username:this.props.match.params.username})
+   // this.props.actions.getPosts();
+    if (this.props.match.params) {
+      this.setState({ username: this.props.match.params.username });
+      this.props.actions.getSpecPosts(this.props.match.params.username);
+      console.log(this.props.posts);
+    }
     console.log(this.props.match.params.username);
-    this.props.actions.getComments();
+    //this.props.actions.getComments();
   }
-  componentWillMount(){
+  componentWillMount() {
     console.log(this.props.match.params.username);
 
-   // this.props.actions.getComments();
-  
+    // this.props.actions.getComments();
   }
   render() {
-    const { handle } = this.props.match.params.username
     return (
       <div>
         <Row>
           <Col xs="4">
-          <h3>ID: {this.state.username}</h3>
+            <h3>ID: {this.state.username}</h3>
             <h3>{this.props.user.username}</h3>
             <br></br>
-            <p>Comments:</p>
+            {/* <p>Comments:</p>
             {this.props.comments.map((c) => (
               <div>
 <Comment comment={c} profile="true"></Comment>              </div>
-            ))}
+            ))} */}
           </Col>
           <Col xs="8">
             <PostList profile="true"></PostList>
@@ -59,6 +58,8 @@ function mapDistpatchToProps(dispatch) {
   return {
     actions: {
       getPosts: bindActionCreators(postActions.getUserPosts, dispatch),
+      getSpecPosts: bindActionCreators(postActions.getSpecUserPosts, dispatch),
+
       getComments: bindActionCreators(commentActions.getUserComments, dispatch),
     },
   };

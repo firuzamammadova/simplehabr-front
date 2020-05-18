@@ -17,7 +17,7 @@ function App() {
         <Switch>
         <Route path="/" exact component={PostList}></Route>
         <Route path="/register" exact component={ Register }></Route>
-        <Route path="/profile/:username" exact component={ Profile }></Route>
+        <Route path="/profile/:username?" exact component={ Profile }></Route>
 
           <Route path="/login" exact component={ Login }></Route>
         </Switch>

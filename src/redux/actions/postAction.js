@@ -38,6 +38,27 @@ export function getUserPosts() {
   };
 }
 
+export function getSpecUserPostsSuccess(posts) {
+  return {
+    type: actionTypes.GET_SPEC_USER_POSTS_SUCCESS,
+    payload: posts,
+  };
+}
+
+export function getSpecUserPosts(username) {
+  console.log(username+"spec")
+  return function (dispatch) {
+    let url = "https://localhost:5001/api/post/getspecuserposts/"+username;
+    const requestOptions = {
+      method: "GET",
+      headers: { ...authHeader(), "Content-Type": "application/json" }
+    };
+    return fetch(url,requestOptions)
+      .then((response) => response.json())
+      .then((result) => dispatch(getSpecUserPostsSuccess(result)));
+  };
+}
+
 
 export function sharePost_success(header, photourl, text) {
   return {
