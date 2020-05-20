@@ -67,7 +67,6 @@ export function addComment_success() {
   }
   
   export function getUserComments() {
-    console.log('usercomments')
     return function (dispatch) {
       let url = "https://localhost:5001/api/comment/getusercomments/";
       const requestOptions = {
@@ -77,5 +76,25 @@ export function addComment_success() {
       return fetch(url,requestOptions)
         .then((response) => response.json())
         .then((result) => dispatch(getUserCommentsSuccess(result)));
+    };
+  }
+
+  export function getSpecUserCommentsSuccess(comments) {
+    return {
+      type: actionTypes.GET_SPEC_USER_COMMENTS,
+      payload: comments,
+    };
+  }
+  
+  export function getSpecUserComments(username) {
+    return function (dispatch) {
+      let url = "https://localhost:5001/api/comment/getspecusercomments/"+username;
+      const requestOptions = {
+        method: "GET",
+        headers: { ...authHeader(), "Content-Type": "application/json" }
+      };
+      return fetch(url,requestOptions)
+        .then((response) => response.json())
+        .then((result) => dispatch(getSpecUserCommentsSuccess(result)));
     };
   }

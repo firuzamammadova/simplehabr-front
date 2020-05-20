@@ -11,9 +11,7 @@ import {
   CardImg,
   CardText,
   CardBody,
-  Form,
-  FormGroup,
-  Input,
+
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -31,7 +29,7 @@ class Post extends Component {
         super(props);
         this.handleLikeClick = this.handleLikeClick.bind(this);
         this.handleDislikeClick = this.handleDislikeClick.bind(this);
-    
+    this.getCorrectPosts=this.getCorrectPosts.bind(this);
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
         this.handleReadMoreClick = this.handleReadMoreClick.bind(this);
         this.handleChange=this.handleChange.bind(this);
@@ -62,7 +60,7 @@ class Post extends Component {
           e.preventDefault();
           console.log("value", this.state.comment);
           this.props.actions.comment(this.state.comment);
-          this.props.actions.getPosts();
+          this.getCorrectPosts();
           this.setState({ comment:{} });
           e.target.value="";
           // put the login here
@@ -87,20 +85,27 @@ class Post extends Component {
     
       handleLikeClick(id) {
         this.props.actions.like(id);
-        this.props.actions.getPosts();
+        this.getCorrectPosts();
       }
-    
+    getCorrectPosts(){
+      if (this.props.profile) {
+        this.props.profile();
+       }
+       else{
+         this.props.actions.getPosts();
+       }
+    }
       handleDislikeClick(id) {
         this.props.actions.dislike(id);
-        this.props.actions.getPosts();
+        this.getCorrectPosts();
       }
       handleDeleteClick(id) {
         console.log(this);
-        this.props.actions.getPosts();
+        this.getCorrectPosts();
     
         this.props.actions.delete(id);
-        this.props.actions.getPosts();
-        this.props.actions.getPosts();
+        this.getCorrectPosts();
+        this.getCorrectPosts();
       }
   render() {
 
@@ -110,12 +115,12 @@ class Post extends Component {
     function Like(props) {
       const id = props.id;
 
-      return <Link onClick={() => props.Click(id)}>Like</Link>;
+      return <button className="asLink" onClick={() => props.Click(id)}>Like</button>;
     }
     function Dislike(props) {
       const id = props.id;
 
-      return <Link onClick={() => props.Click(id)}>Dislike</Link>;
+      return <button  className="asLink" onClick={() => props.Click(id)}>Dislike</button>;
     }
     function More(props) {
       const id = props.id;
@@ -153,7 +158,7 @@ class Post extends Component {
             >
               {post.text}
             </CardText>
-            <Link onClick={() =>props.Click(post.id)}>
+            <Link to="/" onClick={() =>props.Click(post.id)}>
               {props.readMoreActive.some((u) => u === post.id)
                 ? "Read Less"
                 : "Read More"}
@@ -193,15 +198,13 @@ class Post extends Component {
 
             <ReadMore Click={this.handleReadMoreClick} readMoreActive={this.state.readMoreActive}></ReadMore>
 
-            <CardText>
-              <div className="grid">
+            <CardText className="grid">
                 <small>{post.likes.length} likes</small>
-                <Link to=""
+                <button className="asLink" to=""
             onClick={()=>{
               this.toggleComments();
             }}
-              style={{ textDecoration: "none", color: "black" }}><small>{post.comments.length} comments</small></Link>
-              </div>
+              style={{ textDecoration: "none", color: "black" }}><small>{post.comments.length} comments</small></button>
             </CardText>
             <div className="grid">
               {post.likes.some((u) => u.username === this.props.username) ? (
@@ -210,7 +213,7 @@ class Post extends Component {
                 <Like id={post.id} Click={this.handleLikeClick}></Like>
               )}
               <span className="space"></span>
-              <Link
+              <button className="asLink"
                 onClick={() => {
                   this.setState({visiblecomments:true});
                   $(`#comment${post.id}`).focus();
@@ -218,11 +221,11 @@ class Post extends Component {
                 }}
               >
                 Comment
-              </Link>
+              </button>
             </div>
           </CardBody>
           
-              {this.state.visiblecomments?( <CommentList post={post}>{}</CommentList>):<div></div>}
+              {this.state.visiblecomments?( <CommentList profile={this.getCorrectPosts()} post={post}>{}</CommentList>):<div></div>}
           
         </Card>
       </div>

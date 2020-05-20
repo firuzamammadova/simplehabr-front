@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, {  Component } from "react";
 import {
   Collapse,
   Navbar,
@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
   NavbarText,
-  Button,
+  
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
@@ -40,7 +40,6 @@ class Navi extends Component {
     } else {
       this.setState({ logged: false });
     }
-    console.log(this.props.user);
   }
 
   toggle = () => this.setIsOpen(!this.isOpen);
@@ -66,7 +65,7 @@ class Navi extends Component {
         </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem><Link to="/profile" onClick={()=>history.push("/profile")}>Profile</Link></DropdownItem>
-          <DropdownItem><Link>Settings</Link></DropdownItem>
+          <DropdownItem><Link to="/settings">Settings</Link></DropdownItem>
           <DropdownItem divider />
           <DropdownItem> <Link
           to="/login"

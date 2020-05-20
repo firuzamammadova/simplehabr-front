@@ -13,6 +13,7 @@ import {
     DropdownMenu,
     DropdownItem,
   } from "reactstrap";
+  import { Link } from "react-router-dom";
 
 class Comment extends Component {
     constructor(props) {
@@ -48,7 +49,7 @@ class Comment extends Component {
         return (
             <div>
                 <div className=" comment margin ">
-               <span className="post">{comment.username}</span> <p className=" margin">{comment.text}</p>
+               <span className="post"><Link to={"/profile/"+comment.username} className="post">{comment.username}</Link></span> <p className=" margin">{comment.text}</p>
                {this.props.profile? <div></div> :( <More deleteClick={this.deleteComment} editClick={this.props.edit} id={comment.id}></More>)}
               
                </div>
@@ -72,7 +73,6 @@ function mapDistpatchToProps(dispatch) {
   }
   function mapStateToProps(state) {
     return {
-      // currentCategory: state.changeCategoryReducer,
       posts: state.postListReducer,
       user: state.authReducer,
     };

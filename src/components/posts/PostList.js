@@ -15,38 +15,33 @@ class PostList extends Component {
 
     this.handleEditClick = this.handleEditClick.bind(this);
     this.handleSaveClick = this.handleSaveClick.bind(this);
-
+this.getCorrectPosts=this.getCorrectPosts.bind(this);
     this.state = {
       header: "",
       text: "",
       photourl: "lalala",
       editActive: "",
-      profile: "",
+      profile:""
     };
-
   }
 
   componentDidMount() {
+  
+  }
+  componentWillMount() {
+    this.getCorrectPosts();
+
+  }
+  getCorrectPosts(){
     if (this.props.profile) {
-      this.setState({ profile: "true" });
-  
-      console.log(this.state.profile);
-  
-    }
+      this.props.profile();
+      this.setState({profile:"true"})
+
+     }
+     else{
+       this.props.actions.getPosts();
+     }
   }
-componentWillMount(){
-  if (this.props.profile) {
-    this.setState({ profile: "true" });
-
-    console.log(this.state.profile);
-
-  }
-  this.state.profile === "true"
-    ? this.props.actions.getUserPosts()
-    : this.props.actions.getPosts();
-  console.log(this.state);
-
-}
   handleEditClick(id) {
     this.setState({ editActive: id });
   }
@@ -57,25 +52,32 @@ componentWillMount(){
 
   render() {
     return (
-      <div className={this.state.profile?"":"container2"}>
+      <div className={this.state.profile ? "" : "container2"}>
         {this.props.user ? (
           <SharePost profile={this.state.profile}></SharePost>
         ) : (
           <div />
         )}
-{              this.state.profile?(<div><br></br><p>Posts:</p></div>) : <div></div>
-}
-        {this.props.posts.map((p) => (
+        {this.state.profile ? (
           <div>
+            <br></br>
+            <p>Posts:</p>
+          </div>
+        ) : (
+          <div></div>
+        )}
+        {this.props.posts.map((p) => (
+          <div key={p.id}>
             {p.id === this.state.editActive ? (
               <SharePost
-                profile={this.state.profile}
+                profile={this.getCorrectPosts}
                 post={p}
                 save={this.handleSaveClick}
               ></SharePost>
             ) : (
               <Post
                 post={p}
+                profile={this.getCorrectPosts}
                 edit={this.handleEditClick}
                 username={this.props.user ? this.props.user.username : ""}
               ></Post>

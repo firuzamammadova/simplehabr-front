@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import * as postActions from "../../redux/actions/postAction";
-import * as likeActions from "../../redux/actions/likeActions";
 import * as commentActions from "../../redux/actions/commentActions";
 import { Form, FormGroup, Input } from "reactstrap";
 import $ from "jquery";
@@ -34,6 +33,15 @@ class WriteComment extends Component {
     var postId = this.props.id;
     this.setState({ comment: { postId, text } });
   }
+  getCorrectPosts(){
+    if (this.props.profile) {
+      this.props.profile();
+       this.setState({profile:"true"})
+     }
+     else{
+       this.props.actions.getPosts();
+     }
+  }
 
   keyPress(e) {
     if (e.keyCode == 13) {
@@ -49,7 +57,7 @@ class WriteComment extends Component {
       } else {
         this.props.actions.comment(this.state.comment);
       }
-      this.props.actions.getPosts();
+this.getCorrectPosts();
       this.setState({ comment: {} });
       e.target.value = "";
       // put the login here

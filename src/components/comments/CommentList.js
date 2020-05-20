@@ -36,7 +36,7 @@ export default class CommentList extends Component {
             {c.id===this.state.editActive? <WriteComment save={this.handleSaveClick} comment={c} id={c.postId}></WriteComment> :
           <Comment edit={this.handleEditClick} comment={c}></Comment>
              } </div> ))}
-        <WriteComment id={this.props.post.id}></WriteComment>
+        <WriteComment profile={this.props.profile} id={this.props.post.id}></WriteComment>
       </div>
     );
   }

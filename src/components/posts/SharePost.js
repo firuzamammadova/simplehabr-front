@@ -21,7 +21,6 @@ class SharePost extends Component {
     }
   }
   componentWillMount() {
-    console.log(this.props.profile);
     this.props.profile === "true"
       ? this.props.actions.getUserPosts()
       : this.props.actions.getPosts();
@@ -88,7 +87,6 @@ class SharePost extends Component {
                   console.log("fdsf");
                 }}
               >
-                {" "}
               </Input>
             </FormGroup>
             <Button color="primary">
