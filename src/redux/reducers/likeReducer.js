@@ -1,11 +1,11 @@
 import * as actionTypes from "../actions/actionTypes";
+import initialState from "./initialState";
 
-export default function like(state = {}, action) {
+export default function like(state = initialState.likes, action) {
+
   switch (action.type) {
-    case actionTypes.LIKE:
-      return {};
-    case actionTypes.DISLIKE:
-      return {};
+    case actionTypes.GET_SPEC_USER_LIKES:
+      return action.payload;
     default:
       return state;
   }

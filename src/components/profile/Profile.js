@@ -3,6 +3,7 @@ import { Row, Col } from "reactstrap";
 import PostList from "../posts/PostList";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import * as likeActions from "../../redux/actions/likeActions";
 
 import * as postActions from "../../redux/actions/postAction";
 import * as commentActions from "../../redux/actions/commentActions";
@@ -26,6 +27,8 @@ class Profile extends Component {
 
       this.props.actions.getSpecPosts(this.props.match.params.username);
       this.props.actions.getSpecPosts(this.props.match.params.username);
+
+      this.props.actions.getSpecLikes(this.props.match.params.username);
     }
     //this.props.actions.getComments();
   }
@@ -58,6 +61,10 @@ this.getCorrectComments();  }
               <div>
 <Comment comment={c} profile="true"></Comment>              </div>
             ))}
+            <p>Likes:</p>
+              {this.props.likes.map((l)=>(
+                <p>{l.postId}</p>
+              ))}
           </Col>
           <Col xs="8">
             <PostList profile={this.getCorrectPosts}></PostList>
@@ -72,7 +79,7 @@ function mapDistpatchToProps(dispatch) {
     actions: {
       getUserPosts: bindActionCreators(postActions.getUserPosts, dispatch),
       getSpecPosts: bindActionCreators(postActions.getSpecUserPosts, dispatch),
-
+      getSpecLikes:bindActionCreators(likeActions.getSpecUserLikes,dispatch),
       getUserComments: bindActionCreators(commentActions.getUserComments, dispatch),
       getSpecUserComments: bindActionCreators(commentActions.getSpecUserComments, dispatch),
 
@@ -85,6 +92,7 @@ function mapStateToProps(state) {
     posts: state.postListReducer,
     user: state.authReducer,
     comments: state.commentReducer,
+    likes:state.likeReducer
   };
 }
 

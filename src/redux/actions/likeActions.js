@@ -55,5 +55,23 @@ export  function Like(postId) {
     return fetch("https://localhost:5001/api/like/dislike/"+postId.toString(), requestOptions);
   }
 
-
+  export function getSpecUserLikesSuccess(likes) {
+    return {
+      type: actionTypes.GET_SPEC_USER_LIKES,
+      payload: likes,
+    };
+  }
+  
+  export function getSpecUserLikes(username) {
+    return function (dispatch) {
+      let url = "https://localhost:5001/api/like/getspecuserlikes/"+username;
+      const requestOptions = {
+        method: "GET",
+        headers: { ...authHeader(), "Content-Type": "application/json" }
+      };
+      return fetch(url,requestOptions)
+        .then((response) => response.json())
+        .then((result) => dispatch(getSpecUserLikesSuccess(result)));
+    };
+  }
 

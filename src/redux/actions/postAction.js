@@ -58,7 +58,6 @@ export function getSpecUserPosts(username) {
 }
 
 export function getPostByIdSuccess(post) {
-  // console.log(posts);
    return {
      type: actionTypes.GET_POST_BY_ID,
      payload: post,
