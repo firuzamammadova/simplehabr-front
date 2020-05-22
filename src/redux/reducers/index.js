@@ -2,7 +2,7 @@ import {combineReducers} from 'redux'
 import postListReducer from './postListReducer'
 import LoginReducer from './authReducer'
 import RegisterReducer from './RegisterReducer'
-import postShareReducer from './postShareReducer'
+import postReducer from './postReducer'
 import likeReducer from './likeReducer'
 import authReducer from './authReducer'
 import commentReducer from './commentReducer'
@@ -12,7 +12,7 @@ const rootReducer=combineReducers({
     postListReducer,
     LoginReducer,
     RegisterReducer,
-    postShareReducer,
+    postReducer,
     likeReducer,
     commentReducer
 })

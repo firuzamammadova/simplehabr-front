@@ -14,6 +14,7 @@ import {
     DropdownItem,
   } from "reactstrap";
   import { Link } from "react-router-dom";
+  import { history}  from "../../redux//reducers/helpers/history";
 
 class Comment extends Component {
     constructor(props) {
@@ -47,7 +48,7 @@ class Comment extends Component {
             );
           }
         return (
-            <div>
+            <div onClick={()=>(history.push('/posts/'+comment.postId))}>
                 <div className=" comment margin ">
                <span className="post"><Link to={"/profile/"+comment.username} className="post">{comment.username}</Link></span> <p className=" margin">{comment.text}</p>
                {this.props.profile? <div></div> :( <More deleteClick={this.deleteComment} editClick={this.props.edit} id={comment.id}></More>)}

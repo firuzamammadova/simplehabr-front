@@ -57,6 +57,28 @@ export function getSpecUserPosts(username) {
   };
 }
 
+export function getPostByIdSuccess(post) {
+  // console.log(posts);
+   return {
+     type: actionTypes.GET_POST_BY_ID,
+     payload: post,
+   };
+ }
+ 
+ export function getPostById(postId) {
+   return function (dispatch) {
+     let url = "https://localhost:5001/api/post/detail/"+postId;
+     const requestOptions = {
+       method: "GET",
+       headers: { ...authHeader(), "Content-Type": "application/json" }
+     };
+     return fetch(url,requestOptions)
+       .then((response) => response.json())
+       .then((result) => dispatch(getPostByIdSuccess(result)));
+   };
+ }
+
+
 
 export function sharePost_success(header, photourl, text) {
   return {

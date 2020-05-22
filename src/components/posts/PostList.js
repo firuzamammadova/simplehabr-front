@@ -68,6 +68,7 @@ this.getCorrectPosts=this.getCorrectPosts.bind(this);
         )}
         {this.props.posts.map((p) => (
           <div key={p.id}>
+            {console.log(p.likes)}
             {p.id === this.state.editActive ? (
               <SharePost
                 profile={this.getCorrectPosts}
