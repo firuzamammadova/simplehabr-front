@@ -13,9 +13,10 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.getCorrectPosts = this.getCorrectPosts.bind(this);
-
+this.consolePost=this.consolePost.bind(this);
     this.state = {
       username: "",
+      likespost: [],
     };
   }
   componentDidMount() {
@@ -24,13 +25,18 @@ class Profile extends Component {
       this.setState({ username: this.props.match.params.username });
       this.props.actions.getSpecPosts(this.props.match.params.username);
       this.props.actions.getSpecPosts(this.props.match.params.username);
-
       this.props.actions.getSpecPosts(this.props.match.params.username);
       this.props.actions.getSpecPosts(this.props.match.params.username);
 
       this.props.actions.getSpecLikes(this.props.match.params.username);
+
+    
     }
     //this.props.actions.getComments();
+  }
+  consolePost(id){
+    this.props.actions.getPost(id);
+        console.log(this.props.post);
   }
   getCorrectPosts() {
     if (this.props.match.params.username) {
@@ -47,7 +53,8 @@ class Profile extends Component {
     }
   }
   componentWillMount() {
-this.getCorrectComments();  }
+    this.getCorrectComments();
+  }
   render() {
     return (
       <div>
@@ -59,12 +66,16 @@ this.getCorrectComments();  }
             <p>Comments:</p>
             {this.props.comments.map((c) => (
               <div>
-<Comment comment={c} profile="true"></Comment>              </div>
+                <Comment comment={c} profile="true"></Comment>{" "}
+              </div>
             ))}
             <p>Likes:</p>
-              {this.props.likes.map((l)=>(
-                <p>{l.postId}</p>
-              ))}
+            {this.props.likes.map((l) => (
+              <p>{//this.consolePost(l.id)
+              }
+              </p>
+            ))}
+           
           </Col>
           <Col xs="8">
             <PostList profile={this.getCorrectPosts}></PostList>
@@ -79,10 +90,16 @@ function mapDistpatchToProps(dispatch) {
     actions: {
       getUserPosts: bindActionCreators(postActions.getUserPosts, dispatch),
       getSpecPosts: bindActionCreators(postActions.getSpecUserPosts, dispatch),
-      getSpecLikes:bindActionCreators(likeActions.getSpecUserLikes,dispatch),
-      getUserComments: bindActionCreators(commentActions.getUserComments, dispatch),
-      getSpecUserComments: bindActionCreators(commentActions.getSpecUserComments, dispatch),
-
+      getSpecLikes: bindActionCreators(likeActions.getSpecUserLikes, dispatch),
+      getUserComments: bindActionCreators(
+        commentActions.getUserComments,
+        dispatch
+      ),
+      getSpecUserComments: bindActionCreators(
+        commentActions.getSpecUserComments,
+        dispatch
+      ),
+      getPost: bindActionCreators(postActions.getPostById, dispatch),
     },
   };
 }
@@ -92,7 +109,8 @@ function mapStateToProps(state) {
     posts: state.postListReducer,
     user: state.authReducer,
     comments: state.commentReducer,
-    likes:state.likeReducer
+    likes: state.likeReducer,
+    post: state.postReducer,
   };
 }
 

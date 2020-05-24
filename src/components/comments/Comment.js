@@ -21,12 +21,17 @@ class Comment extends Component {
         super(props);
 
         this.deleteComment=this.deleteComment.bind(this);
+        this.handleCommentClick=this.handleCommentClick.bind(this);
 
       }
 
     deleteComment(id){
         this.props.actions.delete(id);
         this.props.actions.getPosts();
+    }
+    handleCommentClick(){
+      history.push('/posts/'+this.props.comment.postId);
+      this.props.actions.getPost(this.props.comment.postId);
     }
     render() {
         var comment=this.props.comment;
@@ -48,7 +53,8 @@ class Comment extends Component {
             );
           }
         return (
-            <div onClick={()=>(history.push('/posts/'+comment.postId))}>
+            <div onClick={()=>(this.handleCommentClick()
+            )}>
                 <div className=" comment margin ">
                <span className="post"><Link to={"/profile/"+comment.username} className="post">{comment.username}</Link></span> <p className=" margin">{comment.text}</p>
                {this.props.profile? <div></div> :( <More deleteClick={this.deleteComment} editClick={this.props.edit} id={comment.id}></More>)}
@@ -69,6 +75,8 @@ function mapDistpatchToProps(dispatch) {
         dislike: bindActionCreators(likeActions.Dislike, dispatch),
         delete: bindActionCreators(commentActions.deleteComment, dispatch),
         comment: bindActionCreators(commentActions.addComment, dispatch),
+        getPost: bindActionCreators(postActions.getPostById, dispatch),
+
       },
     };
   }
